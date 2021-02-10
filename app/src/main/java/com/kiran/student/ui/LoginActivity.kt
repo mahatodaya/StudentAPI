@@ -4,12 +4,18 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.TextView
+import android.view.View
+import android.widget.*
 import androidx.core.app.ActivityCompat
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.kiran.student.R
+import com.kiran.student.api.ServiceBuilder
+import com.kiran.student.repository.UserRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
 
@@ -24,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var tvRegister: TextView
     private lateinit var btnLogin: Button
     private lateinit var chkRememberMe: CheckBox
+    private lateinit var linearLayout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +40,7 @@ class LoginActivity : AppCompatActivity() {
         btnLogin = findViewById(R.id.btnLogin)
         tvRegister = findViewById(R.id.tvRegister)
         chkRememberMe = findViewById(R.id.chkRememberMe)
+        linearLayout = findViewById(R.id.linearLayout)
 
         checkRunTimePermission()
 
@@ -71,6 +79,47 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login() {
+        val username = etUsername.text.toString()
+        val password = etPassword.text.toString()
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val repository = UserRepository()
+                val response = repository.checkUser(username, password)
+                if (response.success == true) {
+                    // dashboard khola
 
+                        ServiceBuilder.token = "Bearer ${response.token}"
+
+                    startActivity(
+                        Intent(
+                            this@LoginActivity,
+                            DashboardActivity::class.java
+                        )
+                    )
+                    finish()
+                } else {
+                    withContext(Dispatchers.Main) {
+                        val snack =
+                            Snackbar.make(
+                                linearLayout,
+                                "Invalid credentials",
+                                Snackbar.LENGTH_LONG
+                            )
+                        snack.setAction("OK", View.OnClickListener {
+                            snack.dismiss()
+                        })
+                        snack.show()
+                    }
+                }
+            } catch (ex: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        ex.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
     }
 }
