@@ -88,7 +88,8 @@ class LoginActivity : AppCompatActivity() {
                 if (response.success == true) {
                     // dashboard khola
 
-                        ServiceBuilder.token = "Bearer ${response.token}"
+                    ServiceBuilder.token = "Bearer ${response.token}"
+                    saveSharedPref(username, password)
 
                     startActivity(
                         Intent(
@@ -121,5 +122,13 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun saveSharedPref(username: String, password: String) {
+        val sharedPref = getSharedPreferences("MyPref", MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putString("username", username)
+        editor.putString("password", password)
+        editor.apply()
     }
 }
