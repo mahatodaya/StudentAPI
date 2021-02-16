@@ -21,5 +21,8 @@ class DashboardActivity : AppCompatActivity() {
 
         Toast.makeText(this, ServiceBuilder.token, Toast.LENGTH_LONG).show()
 
+        btnAddStudent.setOnClickListener { startActivity(Intent(this, AddStudentsActivity::class.java)) }
+        btnViewStudent.setOnClickListener { startActivity(Intent(this, StudentDetailsActivity::class.java)) }
+
     }
 }

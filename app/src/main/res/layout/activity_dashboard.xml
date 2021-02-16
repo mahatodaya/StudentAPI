@@ -13,7 +13,7 @@
         android:layout_marginStart="116dp"
         android:layout_marginLeft="116dp"
         android:layout_marginTop="124dp"
-        android:text="Button"
+        android:text="Add Student"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +24,7 @@
         android:layout_marginStart="116dp"
         android:layout_marginLeft="116dp"
         android:layout_marginTop="76dp"
-        android:text="Button"
+        android:text="View Student"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnStudentAdd" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,10 @@
 package com.kiran.student.entity
 
-class Student {
-}
+data class Student (
+    val _id : String? = null,
+    val fullname : String? = null,
+    val age : Int? = null,
+    val gender : String? = null,
+    val address : String? = null,
+    val photo : String? = null,
+)
