@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kiran.student.R
+import com.kiran.student.api.ServiceBuilder
 import com.kiran.student.entity.Student
 import com.kiran.student.repository.StudentRepository
 import de.hdodenhof.circleimageview.CircleImageView
@@ -49,6 +50,14 @@ class StudentAdapter (
         holder.tvAge.text = student.age.toString()
         holder.tvAddress.text = student.address
         holder.tvGender.text = student.gender
+
+        val imagePath = ServiceBuilder.loadImagePath() + student.photo
+        if (!student.photo.equals("no-photo.jpg")) {
+            Glide.with(context)
+                .load(imagePath)
+                .fitCenter()
+                .into(holder.imgProfile)
+        }
 
 //        Glide.with(context)
 //            .load(student.photo)
